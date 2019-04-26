@@ -15,14 +15,6 @@ crash_data %>% select(FROMDATE, WARD, MAJORINJURIES_BICYCLIST:SPEEDING_INVOLVED 
 ```{r}
 crash_data_aggregation <- crash_data %>% select(FROMDATE, WARD, MAJORINJURIES_BICYCLIST:SPEEDING_INVOLVED ) %>% 
   mutate(Date = as.Date(FROMDATE)) %>% 
-  # mutate(Involved = case_when(TOTAL_BICYCLES > 0 & TOTAL_PEDESTRIANS > 0 & TOTAL_VEHICLES > 0 ~ 'Bicyclist, Pedestrian, Vehicle',
-  #                             TOTAL_BICYCLES > 0 & TOTAL_PEDESTRIANS > 0 ~ 'Bicyclist, Pedestrian',
-  #                             TOTAL_BICYCLES > 0 & TOTAL_VEHICLES > 0 ~ 'Bicyclist, Vehicle',
-  #                             TOTAL_PEDESTRIANS > 0 & TOTAL_VEHICLES > 0 ~ 'Pedestrian, Vehicle',
-  #                             TOTAL_BICYCLES > 0 ~ 'Bicyclist',
-  #                             TOTAL_PEDESTRIANS > 0 ~ 'Pedestrian',
-  #                             TOTAL_VEHICLES > 0 ~ 'Vehicle',
-  #                             TRUE ~ 'Other')) %>% 
   group_by(Month=floor_date(Date, "month")) %>% 
   summarise(Bike = sum(TOTAL_BICYCLES),
             `Cyclist Injuries` = sum(MAJORINJURIES_BICYCLIST + MINORINJURIES_BICYCLIST),
