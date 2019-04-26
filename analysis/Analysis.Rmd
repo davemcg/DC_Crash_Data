@@ -30,13 +30,13 @@ crash_data_aggregation <- crash_data %>% select(FROMDATE, WARD, MAJORINJURIES_BI
             `Pedestrian Injuries` = sum(MAJORINJURIES_PEDESTRIAN + MINORINJURIES_PEDESTRIAN),
             Vehicle = sum(TOTAL_VEHICLES),
             `Driver Injuries` = sum(MAJORINJURIES_DRIVER + MINORINJURIES_DRIVER)) %>% 
-  filter(Month > '2010-01-01', Month < '2019-01-01') %>% 
   gather(Type, Count, -Month)
 ```
 
 # Injuries over Time
 ```{r}
-crash_data_aggregation%>% 
+crash_data_aggregation %>% 
+  filter(Month > '2010-01-01', Month < '2019-01-01') %>% 
   filter(grepl('Injur', Type)) %>% 
   ggplot(aes(x=Month, y = Count)) + 
   geom_point() + 
@@ -49,7 +49,22 @@ crash_data_aggregation%>%
 # Counts of Incidents by Bikes, Pedestrians, Vehicles
 ```{r}
 crash_data_aggregation %>% 
+  filter(Month > '2010-01-01', Month < '2019-01-01') %>% 
   filter(!grepl('Injur', Type)) %>% 
+  ggplot(aes(x=Month, y = Count)) + 
+  geom_point() + 
+  geom_smooth() +
+  facet_wrap(~ Type, scales = 'free_y') + 
+  theme_minimal() +
+  xlab('Date')
+```
+
+
+# Car Injuries over larger time period
+```{r}
+crash_data_aggregation %>% 
+  filter(Month > '2008-01-01', Month < '2019-01-01') %>% 
+  filter(grepl('Dri|Vehi', Type)) %>% 
   ggplot(aes(x=Month, y = Count)) + 
   geom_point() + 
   geom_smooth() +
